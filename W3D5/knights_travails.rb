@@ -11,22 +11,18 @@ attr_reader :considered_positions
     build_move_tree 
   end
 
-  def build_move_tree
-    nodes = [@root_node]
-    until nodes.empty?
-      node = nodes.shift
-      current_position = node.value
-      new_move_positions(current_position).each do |children|
-        child = PolyTreeNode.new(children)
-        node.add_child(child)
-        nodes << child 
-      end
+    def build_move_tree
+        nodes = [@root_node]
+        until nodes.empty?
+        node = nodes.shift
+        current_position = node.value
+        new_move_positions(current_position).each do |children|
+            child = PolyTreeNode.new(children)
+            node.add_child(child)
+            nodes << child 
+        end
+        end
     end
-
-
-
-
-  end
 
     def self.valid_moves(pos)
         valid_moves = []
@@ -52,12 +48,16 @@ attr_reader :considered_positions
       newvar
     end
 
+    def find_path(end_pos)
+        @root_node.dfs(end_pos)
+    end
 
-
+    def trace_path_back(@root_node)
+    end
 
 
 end
 
 jeff = KnightPathFinder.new
 
-print jeff.considered_positions.length
+print jeff.find_path([2, 2])
