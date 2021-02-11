@@ -53,4 +53,11 @@ end
 describe "stock_picker" do
     let(:array) { [4, 3, 2, 0, 1] }
     let(:array_2) { [4, 3, 7, 2, 8] }
+    let(:array_3) { [3, 2 ,1]}
+
+    it "finds best most profitable pair of days" do 
+        expect(stock_picker(array)).to eq([3, 4])
+        expect(stock_picker(array_2)).to eq([3, 4])
+        expect(stock_picker(array_3)).to be_nil
+    end
 end

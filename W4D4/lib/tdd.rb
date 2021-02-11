@@ -25,3 +25,21 @@ end
 def transpose(matrix)
     matrix.transpose
 end
+
+def stock_picker(arr)
+    largest_value = 0
+    largest_pair = nil
+    arr.each_with_index do |ele1, i|
+        arr.each_with_index do |ele2, j|
+            if i < j
+                dif = ele2 - ele1
+                if largest_value < dif
+                    largest_value = dif
+                    largest_pair = [i, j]
+                end
+            end
+        end
+    end
+    largest_pair
+end
+
