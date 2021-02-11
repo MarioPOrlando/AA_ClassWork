@@ -30,3 +30,27 @@ describe "two_sum" do
     end
 
 end
+
+
+describe "transpose" do
+
+    let(:matrix) {
+       [[1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]]
+    }
+
+    it "transposes a matrix" do
+        expect(transpose(matrix)).to eq([
+            [1, 4, 7],
+            [2, 5, 8],
+            [3, 6, 9]
+        ])
+    end
+end
+
+
+describe "stock_picker" do
+    let(:array) { [4, 3, 2, 0, 1] }
+    let(:array_2) { [4, 3, 7, 2, 8] }
+end

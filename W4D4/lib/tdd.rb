@@ -7,7 +7,6 @@ end
 # p my_uniq([1,1,2,2,3,4])
 
 
-
 def two_sum(arr)
     new_arr = []
 
@@ -23,13 +22,6 @@ def two_sum(arr)
     new_arr
 end
 
-# def two_sum(arr)
-#     pairs = []
-
-#     arr.each_index do |i|
-#         ((i + 1)...arr.length).to_a.each do |j|
-#             paris << [i, j] if arr[i] + arr[j] == 0
-#         end
-#     end
-#     pairs
-# end
+def transpose(matrix)
+    matrix.transpose
+end
