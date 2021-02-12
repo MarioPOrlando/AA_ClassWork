@@ -1,8 +1,17 @@
 class TowersOfHanoi
 
+  attr_reader :board
+
+  def initialize
+    @board = [[4,3,2,1], [], []]
+  end
 
   def move(pos_start, pos_end) #pos = number representing subarray
+    return false if @board[0][pos_start].empty?
     
+    if @board[0][pos_start][-1] < @board[0][pos_end][-1]
+
+
   end
 
 end
