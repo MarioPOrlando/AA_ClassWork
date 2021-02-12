@@ -43,10 +43,8 @@ def largest_cont_subsum(list)
     current = 0
 
     (0...list.length).each do |i|
-           
-            current += list[i]
-            biggest = current if current > biggest
-    
+        current += list[i]
+        biggest = current if current > biggest
     end
     biggest
 end
