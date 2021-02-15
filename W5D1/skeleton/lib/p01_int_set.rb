@@ -44,17 +44,18 @@ class IntSet
   end
 
   def remove(num)
-    
+    @store[num % @num_buckets] = []
   end
 
   def include?(num)
-   @store[num % @num_buckets] == [num]
+    @store[num % @num_buckets] == [num]
   end
 
   private
 
   def [](num)
     # optional but useful; return the bucket corresponding to `num`
+    @store[num]
   end
 
   def num_buckets
@@ -71,12 +72,21 @@ class ResizingIntSet
   end
 
   def insert(num)
+    @store[num % @store.length] << [num]
+    @count += 1
   end
 
   def remove(num)
+    @store[num % @store.length] = []
+    @count -= 1
   end
 
   def include?(num)
+    @store[num % @store.length] == [num]
+  end
+
+  def count
+    @count
   end
 
   private
