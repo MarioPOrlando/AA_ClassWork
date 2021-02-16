@@ -3,8 +3,17 @@ class Integer
 end
 
 class Array
+
   def hash
+    # if self.empty?
+    #   return 0
+    # end
+    # self.inject { |h, k| num.to_i }
+    each_with_index.inject(0) do |intermediate_hash, (el, i)|
+      (el.hash + i.hash) ^ intermediate_hash
+    end
   end
+
 end
 
 class String
