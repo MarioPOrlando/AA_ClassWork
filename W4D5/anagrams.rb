@@ -17,11 +17,17 @@ def anagram?(str_1, str_2)
 
     str1.each do |ele|
         index = str2.find_index(ele)
-        str2.delete(index)
+        if !index.nil?
+        str2.delete_at(index)
+        end
     end
-
     str2.empty?
 end
+#Big O(n ^ 2)
 
+
+def anagram?(str_1,str_2)
+    str_1.split("").sort == str_2.split("").sort
+end
 p anagram?("gizmo", "sally")    #=> false
 p anagram?("elvis", "lives") 
