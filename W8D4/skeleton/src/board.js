@@ -89,6 +89,18 @@ Board.prototype.isOccupied = function (pos) {
  * Returns empty array if no pieces of the opposite color are found.
  */
 Board.prototype._positionsToFlip = function(pos, color, dir, piecesToFlip){
+  let nextPos = [pos[0] + dir[0], pos[1] + dir[1]];
+  if (!this.isValidPos(nextPos)) return [];
+  let nextPiece = this.getPiece(nextPos);
+  if (nextPiece === undefined) return [];
+  if (nextPiece.color === color) return [];
+  if (piecesToFlip === undefined){
+    piecesToFlip = [nextPos];
+  }else{
+    piecesToFlip.push(nextPos);
+  }
+  piecesToFlip.concat(this._positionsToFlip(nextPos, color, dir, piecesToFlip));
+  return piecesToFlip;
 };
 
 /**
@@ -97,6 +109,13 @@ Board.prototype._positionsToFlip = function(pos, color, dir, piecesToFlip){
  * color being flipped.
  */
 Board.prototype.validMove = function (pos, color) {
+  let piece = this.getPiece(pos);
+  if (!(piece === undefined)) return false;
+  for (let i = 0; i < Board.DIRS.length; i++){
+    let flips = this._positionsToFlip(pos, color, Board.DIRS[i]);
+    if (flips.length > 0) return true;
+  }
+  return false;
 };
 
 /**
