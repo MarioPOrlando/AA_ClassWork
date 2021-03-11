@@ -21,7 +21,40 @@ Array.prototype.twoSum = function(){
             }
         };
     };
-    console.log(newArr)
+    console.log(newArr);
 };
 
-[1, -1, 2, 3,-3 ,4].twoSum()
+[1, -1, 2, 3,-3 ,4].twoSum();
+
+// Array.prototype.transpose = function() {
+//   let newMatrix = [];
+//   for (let i = 0; i < this.length; i++) {
+//     for (let j = 0; j < this[i].length; j++) {
+//       newMatrix[i]
+//       newMatrix[i][j] = this[j][i];
+//       // newMatrix.push([this[i], this[j]] = [this[j], this[i]]);
+//     };
+//   };
+//   console.log(this);
+// }; 
+
+Array.prototype.transpose = function () {
+  let newMatrix = [];
+
+  for (let i = 0; i < this.length; i++) {
+    newMatrix.push([])
+  };
+
+  for (let i = 0; i < this.length; i++) {
+    // console.log("hello");
+    for (let j = 0; j < this[i].length; j++) {
+      newMatrix[j].push(this[i][j]);
+      console.log("hello"); // = [this[j], this[i]])
+    }
+  };
+  console.log(newMatrix);
+};
+
+[[1, 2, 3],
+ [4, 5, 6],
+ [7, 8 ,9]].transpose();
