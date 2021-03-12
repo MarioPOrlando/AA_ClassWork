@@ -129,8 +129,14 @@ Board.prototype.placePiece = function (pos, color) {
   if (this.validMove(pos, color)) {
     for (let i = 0; i < Board.DIRS.length; i++){
       let flipPieces = this._positionsToFlip(pos, color, Board.DIRS[i]);
-      for (let j = 0; j < flipPieces.length; j++){
-        this.getPiece(flipPieces[j]).flip();
+      if (flipPieces.length > 0) {
+        let lastPiece = flipPieces[flipPieces.length-1];
+        let nextPos = [lastPiece[0] + Board.DIRS[i][0], lastPiece[1] + Board.DIRS[i][1]];
+        if (this.isOccupied(nextPos)) {
+          for (let j = 0; j < flipPieces.length; j++){
+            this.getPiece(flipPieces[j]).flip();
+          }
+        }
       }
     }
     this.grid[pos[0]][pos[1]] = new Piece(color);
