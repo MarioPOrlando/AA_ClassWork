@@ -60,9 +60,6 @@ Board.prototype.getPiece = function (pos) {
  * matches a given color.
  */
 Board.prototype.isMine = function (pos, color) {
-  // if (this.getPiece(pos) === ) {
-
-  // }
   let piece = this.getPiece(pos);
   if (piece === undefined) return false;
   return piece.color === color;
@@ -113,7 +110,11 @@ Board.prototype.validMove = function (pos, color) {
   if (!(piece === undefined)) return false;
   for (let i = 0; i < Board.DIRS.length; i++){
     let flips = this._positionsToFlip(pos, color, Board.DIRS[i]);
-    if (flips.length > 0) return true;
+    if (flips.length > 0) {
+      let lastPiece = flips[flips.length-1];
+      let nextPos = [lastPiece[0] + Board.DIRS[i][0], lastPiece[1] + Board.DIRS[i][1]];
+      if (this.isOccupied(nextPos)) return true;
+    }
   }
   return false;
 };
@@ -125,6 +126,17 @@ Board.prototype.validMove = function (pos, color) {
  * Throws an error if the position represents an invalid move.
  */
 Board.prototype.placePiece = function (pos, color) {
+  if (this.validMove(pos, color)) {
+    for (let i = 0; i < Board.DIRS.length; i++){
+      let flipPieces = this._positionsToFlip(pos, color, Board.DIRS[i]);
+      for (let j = 0; j < flipPieces.length; j++){
+        this.getPiece(flipPieces[j]).flip();
+      }
+    }
+    this.grid[pos[0]][pos[1]] = new Piece(color);
+  } else {
+    throw new Error("Invalid move!");
+  }
 };
 
 /**
@@ -132,12 +144,20 @@ Board.prototype.placePiece = function (pos, color) {
  * the Board for a given color.
  */
 Board.prototype.validMoves = function (color) {
+  let valid = [];
+  for (let i = 0; i < this.grid.length; i++) {
+    for (let j = 0; j < this.grid[i].length; j++){
+      if (this.validMove([i,j], color)) valid.push([i,j]);
+    }
+  }
+  return valid;
 };
 
 /**
  * Checks if there are any valid moves for the given color.
  */
 Board.prototype.hasMove = function (color) {
+  return this.validMoves(color).length > 0;
 };
 
 
@@ -147,6 +167,8 @@ Board.prototype.hasMove = function (color) {
  * the black player are out of moves.
  */
 Board.prototype.isOver = function () {
+  // return !(this.hasMove('black')) && !(this.hasMove('white'));
+  return !(this.hasMove('black') || this.hasMove('white'));
 };
 
 
@@ -156,6 +178,17 @@ Board.prototype.isOver = function () {
  * Prints a string representation of the Board to the console.
  */
 Board.prototype.print = function () {
+  for (let i = 0; i < this.grid.length; i++) {
+    let row = [];
+    for (let j = 0; j < this.grid[i].length; j++){
+      if (this.isOccupied([i,j])) {
+        row.push(this.getPiece([i,j]).toString());
+      } else {
+        row.push(' ');
+      }
+    }
+    console.log(row);
+  }
 };
 
 
