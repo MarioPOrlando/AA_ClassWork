@@ -34,11 +34,9 @@ function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
   //    1]`. Swap if necessary. Call `innerBubbleSortLoop` again to
   //    continue the inner loop. You'll want to increment i for the
   //    next call, and possibly switch madeAnySwaps if you did swap.
-  console.log(arr);
   if (i == arr.length - 1)
   {
-    //outerBubbleSortLoop(madeAnySwaps);
-    return;
+    outerBubbleSortLoop(madeAnySwaps);
   }
   else {
     askIfGreaterThan(arr[i], arr[i + 1], function(answer) {
@@ -61,13 +59,21 @@ function absurdBubbleSort(arr, sortCompletionCallback) {
   function outerBubbleSortLoop(madeAnySwaps) {
     // Begin an inner loop if you made any swaps. Otherwise, call
     // `sortCompletionCallback`.
-
+    if (madeAnySwaps){
+      innerBubbleSortLoop(arr, 0, false, outerBubbleSortLoop);
+    }else{
+      sortCompletionCallback(arr);
+    }
   }
-
+  outerBubbleSortLoop(true);
   // Kick the first outer loop off, starting `madeAnySwaps` as true.
 }
 
-// absurdBubbleSort([3, 2, 1], function(arr) {
-//   console.log("Sorted array: " + JSON.stringify(arr));
-//   reader.close();
-// });
+// function sortCompletionCallback(arr){
+//   reader.close;
+  
+// };
+absurdBubbleSort([3, 2, 1], function(arr) {
+  console.log("Sorted array: " + JSON.stringify(arr));
+  reader.close();
+});
