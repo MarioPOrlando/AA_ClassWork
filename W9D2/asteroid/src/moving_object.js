@@ -22,4 +22,22 @@ MovingObject.prototype.move = function(){
   }
 }
 
+MovingObject.prototype.isCollidedWith = function (obj) {
+  let {x,y} = obj.pos;
+  let distance = (this.pos.x - x)** 2 + (this.pos.y - y)** 2;
+  distance **= 0.5;
+  return (distance <= (this.radius + obj.radius));
+}
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = MovingObject;

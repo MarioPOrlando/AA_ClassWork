@@ -11,6 +11,19 @@ GameView.prototype.start = function (){
     requestAnimationFrame(this.start.bind(this));
 }
 
+
+GameView.prototype.bindKeyHandlers = function (){
+    console.log(key);
+}
+
+
+
+
+
+
+
+
+
 module.exports = GameView;
 
 
