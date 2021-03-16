@@ -1,40 +1,31 @@
 const MovingObject = require("./moving_object");
+const Util = require("./util")
 
-
-
-
-
-
-function Ship (game) {
+function Ship(game) {
     MovingObject.call(this, {
         radius: Ship.RADIUS, 
         color: Ship.COLOR,
         vel: {x: 0, y:0},
-        // pos: {
-        //     x: CONSTANTS.DIM_X * Math.random(),
-        //     y: CONSTANTS.DIM_Y * Math.random()
-        // };
-        pos: game.randomPosition();
+        pos: game.randomPosition(), 
+        game
     })
 }
 
+Util.inherits(Ship, MovingObject);
 
 Ship.prototype.power = function (impulse) {
     this.vel.x += impulse.x;
     this.vel.y += impulse.y;
 }
 
-
-
-
-
-
-
-
-
-
-
-
+Ship.prototype.draw = function(ctx){
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
+    ctx.fill();
+}
 
 Ship.RADIUS = 20;
 Ship.COLOR = "blue";
+
+module.exports = Ship;

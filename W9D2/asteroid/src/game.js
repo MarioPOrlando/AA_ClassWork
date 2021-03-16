@@ -1,4 +1,5 @@
 const Asteroid = require("./asteroid");
+const Ship = require("./ship");
 
 const CONSTANTS = {
     DIM_X: 960,
@@ -8,29 +9,29 @@ const CONSTANTS = {
 
 function Game() {
     this.asteroids = [];
+    this.restart();
+}
+
+Game.prototype.restart = function(){
     this.addAsteroids();
+    this.ship = new Ship(this);
 }
 
 Game.prototype.addAsteroids = function (){
-    while(this.asteroids.length < CONSTANTS.NUM_ASTEROIDS) {
-        // let asteroid = new Asteroid({
-        //     x: CONSTANTS.DIM_X * Math.random(),
-        //     y: CONSTANTS.DIM_Y * Math.random()
-        // }, {game: this});
-
-        // this.asteroids.push(asteroid);
+    while(this.asteroids.length < CONSTANTS.NUM_ASTEROIDS)
         this.addAsteroid();
-    }
 };
 
 Game.prototype.draw = function (ctx) {
     ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);
     this.asteroids.forEach(asteroid => asteroid.draw(ctx));
+    this.ship.draw(ctx);
 }
 
 Game.prototype.moveObjects = function () {
     this.checkCollisions();
     this.asteroids.forEach(asteroid => asteroid.move());
+    this.ship.move();
 }
 
 Game.prototype.wrap = function(pos){
@@ -45,6 +46,7 @@ Game.prototype.wrap = function(pos){
 }
 
 Game.prototype.checkCollisions = function (){
+    // if two asteroids collide, remove several asteroids and create new ones
     for (let i = 1; i < 10; i++){
         for (let j = 0; j < i; j++){
             if (this.asteroids[i].isCollidedWith(this.asteroids[j])){
@@ -55,6 +57,12 @@ Game.prototype.checkCollisions = function (){
             }
         };
     };
+    // if an asteroid collides with the ship, then restart the game
+    this.asteroids.forEach(asteroid => {
+        if (asteroid.isCollidedWith(this.ship)){
+            this.restart();
+        }
+    })
 };
 
 Game.prototype.addAsteroid = function (){
