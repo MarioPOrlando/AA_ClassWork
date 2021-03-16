@@ -15,7 +15,7 @@
   \*************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const MovingObject = __webpack_require__(/*! ./moving_object */ \"./src/moving_object.js\");\nconst Util = __webpack_require__(/*! ./util */ \"./src/util.js\");\nconst CONSTANTS = {\n    COLOR: \"grey\",\n    RADIUS: 30\n};\n\n\n\nfunction Asteroid(pos){\n    MovingObject.call(this, {pos: pos, vel: Math.random(), radius: CONSTANTS.RADIUS, color: CONSTANTS.COLOR});\n}\n\nUtil.inherits(Asteroid, MovingObject);\nmodule.exports = Asteroid;\n\n\n//# sourceURL=webpack://asteroid/./src/asteroid.js?");
+eval("const MovingObject = __webpack_require__(/*! ./moving_object */ \"./src/moving_object.js\");\nconst Util = __webpack_require__(/*! ./util */ \"./src/util.js\");\nconst CONSTANTS = {\n    COLOR: \"grey\",\n    RADIUS: 30,\n    VELOCITY_RANGE: 5,\n};\n\nfunction Asteroid(pos, {game} = {}){\n    MovingObject.call(this, {\n        pos,\n        vel: {\n            x: Math.random() * CONSTANTS.VELOCITY_RANGE,\n            y: Math.random() * CONSTANTS.VELOCITY_RANGE\n        },\n        radius: CONSTANTS.RADIUS,\n        color: CONSTANTS.COLOR,\n        game\n    });\n\n    this.id = Asteroid.id++;\n}\n\nAsteroid.id = 0;\n\nUtil.inherits(Asteroid, MovingObject);\nmodule.exports = Asteroid;\n\n\n//# sourceURL=webpack://asteroid/./src/asteroid.js?");
 
 /***/ }),
 
@@ -25,7 +25,7 @@ eval("const MovingObject = __webpack_require__(/*! ./moving_object */ \"./src/mo
   \*********************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const Asteroid = __webpack_require__(/*! ./asteroid */ \"./src/asteroid.js\");\nconst CONSTANTS = {\n    DIM_X: 960,\n    DIM_Y: 540,\n    NUM_ASTEROIDS: 10\n}\n\nfunction Game() {\n    this.asteroids = [];\n    this.addAsteroids();\n}\n\nGame.prototype.addAsteroids = function (){\n    while(this.asteroids.length < CONSTANTS.NUM_ASTEROIDS) {\n        let asteroid = new Asteroid({x: CONSTANTS.DIM_X * Math.random(), y: CONSTANTS.DIM_Y * Math.random()});\n        this.asteroids.push(asteroid);\n    }\n};\n\nGame.prototype.draw = function (ctx) {\n    ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);\n    this.asteroids.forEach(asteroid => asteroid.draw(ctx));\n}\n\nGame.prototype.moveObjects = function () {\n    this.asteroids.forEach(asteroid => asteroid.move());\n}\n\nmodule.exports = Game;\n\n\n\n\n\n\n\n\n\n\n\n\n//# sourceURL=webpack://asteroid/./src/game.js?");
+eval("const Asteroid = __webpack_require__(/*! ./asteroid */ \"./src/asteroid.js\");\n\nconst CONSTANTS = {\n    DIM_X: 960,\n    DIM_Y: 540,\n    NUM_ASTEROIDS: 10\n}\n\nfunction Game() {\n    this.asteroids = [];\n    this.addAsteroids();\n}\n\nGame.prototype.addAsteroids = function (){\n    while(this.asteroids.length < CONSTANTS.NUM_ASTEROIDS) {\n        let asteroid = new Asteroid({\n            x: CONSTANTS.DIM_X * Math.random(),\n            y: CONSTANTS.DIM_Y * Math.random()\n        }, {game: this});\n\n        this.asteroids.push(asteroid);\n    }\n};\n\nGame.prototype.draw = function (ctx) {\n    ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);\n    this.asteroids.forEach(asteroid => asteroid.draw(ctx));\n}\n\nGame.prototype.moveObjects = function () {\n    this.asteroids.forEach(asteroid => asteroid.move());\n}\n\nGame.prototype.wrap = function(pos){\n    let {x, y} = pos;\n\n    if ( x > CONSTANTS.DIM_X ) x = 0;\n    if ( y > CONSTANTS.DIM_Y ) y = 0;\n    if ( x < 0 ) x = CONSTANTS.DIM_X;\n    if ( y < 0 ) y = CONSTANTS.DIM_Y;\n\n    return {x, y};\n}\n\nmodule.exports = Game;\n\n\n\n\n\n\n\n\n\n\n\n\n//# sourceURL=webpack://asteroid/./src/game.js?");
 
 /***/ }),
 
@@ -55,7 +55,7 @@ eval("const GameView = __webpack_require__(/*! ./game_view */ \"./src/game_view.
   \******************************/
 /***/ ((module) => {
 
-eval("function MovingObject({pos, vel, radius, color} = {}) {\n  this.pos = pos;\n  this.vel = vel;\n  this.radius = radius;\n  this.color = color;\n}\n\nMovingObject.prototype.draw = function (ctx){\n  ctx.fillStyle = this.color;\n  ctx.beginPath();\n  ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);\n  console.log(this.pos);\n  ctx.fill();\n}\n\n\nMovingObject.prototype.move = function(){\n this.pos.x += this.vel.x;\n this.pos.y += this.vel.y;\n}\n\n\n\nmodule.exports = MovingObject;\n\n//# sourceURL=webpack://asteroid/./src/moving_object.js?");
+eval("function MovingObject({pos, vel, radius, color, game} = {}) {\n  this.pos = pos;\n  this.vel = vel;\n  this.radius = radius;\n  this.color = color;\n  this.game = game;\n}\n\nMovingObject.prototype.draw = function (ctx){\n  ctx.fillStyle = this.color;\n  ctx.beginPath();\n  ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);\n  ctx.fill();\n}\n\n\nMovingObject.prototype.move = function(){\n  this.pos.x += this.vel.x;\n  this.pos.y += this.vel.y;\n  if (this.game){\n    this.pos = this.game.wrap(this.pos);\n  }\n}\n\nmodule.exports = MovingObject;\n\n//# sourceURL=webpack://asteroid/./src/moving_object.js?");
 
 /***/ }),
 
