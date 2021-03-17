@@ -27,7 +27,8 @@ Ship.prototype.draw = function(ctx){
 }
 
 Ship.prototype.fireBullets = function (){
-    this.game.bullets.push(new Bullet(this, 0));
+    [0, 90, 180, 270].forEach(angle => this.game.bullets.push(new Bullet(this, angle)))
+    
 }
 
 Ship.RADIUS = 20;

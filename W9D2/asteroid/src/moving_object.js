@@ -13,12 +13,11 @@ MovingObject.prototype.draw = function (ctx){
   ctx.fill();
 }
 
-
 MovingObject.prototype.move = function(){
   this.pos.x += this.vel.x;
   this.pos.y += this.vel.y;
-  
-  if (this.game){
+
+  if (this.game ){
     this.pos = this.game.wrap(this.pos);
   }
 }

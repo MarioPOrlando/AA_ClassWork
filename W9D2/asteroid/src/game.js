@@ -9,12 +9,12 @@ const CONSTANTS = {
 
 function Game() {
     this.asteroids = [];
-    this.bullets = [];
     this.restart();
 }
 
 Game.prototype.restart = function(){
     this.addAsteroids();
+    this.bullets = [];
     this.ship = new Ship(this);
 }
 
@@ -26,6 +26,7 @@ Game.prototype.addAsteroids = function (){
 Game.prototype.draw = function (ctx) {
     ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);
     this.asteroids.forEach(asteroid => asteroid.draw(ctx));
+    this.bullets.forEach(bullet => bullet.draw(ctx));
     this.ship.draw(ctx);
 }
 
@@ -60,11 +61,22 @@ Game.prototype.checkCollisions = function (){
         };
     };
     // if an asteroid collides with the ship, then restart the game
-    this.asteroids.forEach(asteroid => {
-        if (asteroid.isCollidedWith(this.ship)){
-            this.restart();
+    // this.asteroids.forEach(asteroid => {
+    //     if (asteroid.isCollidedWith(this.ship)){
+    //         this.restart();
+    //     }
+    // })
+
+    // bullets
+    for (let i = 0, len = this.bullets.length; i < len; i++){
+        let bullet = this.bullets[i];
+        let {x, y} = bullet.pos;
+
+        if (x < 0 || y < 0 || x > CONSTANTS.DIM_X || y > CONSTANTS.DIM_Y){
+            this.bullets.splice(i--, 1);
+            len -= 1;
         }
-    })
+    }
 };
 
 Game.prototype.addAsteroid = function (){
