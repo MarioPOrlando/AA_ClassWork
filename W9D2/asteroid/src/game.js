@@ -9,6 +9,7 @@ const CONSTANTS = {
 
 function Game() {
     this.asteroids = [];
+    this.bullets = [];
     this.restart();
 }
 
@@ -31,6 +32,7 @@ Game.prototype.draw = function (ctx) {
 Game.prototype.moveObjects = function () {
     this.checkCollisions();
     this.asteroids.forEach(asteroid => asteroid.move());
+    this.bullets.forEach(bullet => bullet.move());
     this.ship.move();
 }
 

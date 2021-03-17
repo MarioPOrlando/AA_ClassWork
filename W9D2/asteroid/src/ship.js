@@ -1,5 +1,6 @@
 const MovingObject = require("./moving_object");
-const Util = require("./util")
+const Util = require("./util");
+const Bullet = require("./bullet");
 
 function Ship(game) {
     MovingObject.call(this, {
@@ -23,6 +24,10 @@ Ship.prototype.draw = function(ctx){
     ctx.beginPath();
     ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
     ctx.fill();
+}
+
+Ship.prototype.fireBullets = function (){
+    this.game.bullets.push(new Bullet(this, 0));
 }
 
 Ship.RADIUS = 20;

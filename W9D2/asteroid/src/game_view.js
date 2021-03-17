@@ -13,10 +13,11 @@ GameView.prototype.start = function (){
 
 
 GameView.prototype.bindKeyHandlers = function (){
-    key('w', () => { this.game.ship.vel.y -= 1; console.log(this.game.ship)});
+    key('w', () => { this.game.ship.vel.y -= 1; });
     key('a', () => { this.game.ship.vel.x -= 1; });
     key('s', () => { this.game.ship.vel.y += 1; });
     key('d', () => { this.game.ship.vel.x += 1; });
+    key('space', () => { this.game.ship.fireBullets() });
 }
 
 module.exports = GameView;
